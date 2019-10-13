@@ -1,0 +1,9 @@
+body {
+    background-color: hotpink;
+    color: white;
+}
+h1 {
+    color: rgb(0, 4, 255);
+    background-color: rgb(255, 220, 105);
+    display: grid;
+}
