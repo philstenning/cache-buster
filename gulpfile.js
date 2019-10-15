@@ -5,6 +5,7 @@ const clean = require('gulp-clean');
 const md5 = require('md5');
 const rename = require('gulp-rename');
 const addsrc = require('gulp-add-src');
+const modifyCssUrls = require('gulp-modify-css-urls');
 
 var cachebust = require('gulp-cache-bust');
 
@@ -101,11 +102,24 @@ task('watch', () => {
     // watch('./src/**/*.*', series(images));
 });
 
-task('appendQueryString1', () => series(clean, appendQueryString));
+task('modifyUrls', () => {
+    const semVersion = 'v3.1.4';
+    return src('./src/**/*.css').pipe(
+        modifyCssUrls({
+            modify: function(url, filePath) {
+                return 'app/' + url;
+            },
+            prepend: 'https://fancycdn.com/',
+            append: '?cache-buster',
+            // modify: (url, filePath) => url,
+            // append: `?${semVersion}`,
+        }).pipe(dest('./dist/'))
+    );
+});
 
 exports.default = series(cleanDest, revision, images, rewrite);
-// exports.default = series(cleanDest, appendQueryString);
-// exports.default = series(cleanDest, changeFilename);
+
 exports.queryString = series(cleanDest, appendQueryString, copyImages);
 exports.fileName = series(cleanDest, revision, images, rewrite);
 exports.clean = series(cleanDest);
+// exports.urls = series(cleanDest, modifyUrls);
