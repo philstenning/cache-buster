@@ -7,3 +7,7 @@ h1 {
     background-color: rgb(255, 220, 105);
     display: grid;
 }
+.main-image {
+    background:url('IMG_20190810_073015.jpg');
+    background-color: #cccccc;
+}

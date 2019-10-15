@@ -13,4 +13,15 @@ gulp
 // watch all css and html files in the ./src folder for any changes
 gulp watch
 
+
+// appends a querystring  myimage.jpg?dskjflasdj to the files
+// this works on all links in the html file
+gulp queryString
+
+// changes the file name of the files
+gulp fileName
+
+// cleans the output folder ./dist of all content
+gulp clean
+
 ```
