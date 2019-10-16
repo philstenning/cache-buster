@@ -7,7 +7,19 @@ h1 {
     background-color: rgb(255, 220, 105);
     display: grid;
 }
-.main-image {
+.main-image-jpg {
     background-image: url('IMG_20190810_073015.jpg');
+    background-color: #cccccc;
+}
+.main-image-png {
+    background-image: url('IMG_20190810_073015.png');
+    background-color: #cccccc;
+}
+.main-image-jpeg {
+    background-image: url('IMG_20190810_073015.jepg');
+    background-color: #cccccc;
+}
+.main-image-gif {
+    background-image: url('IMG_20190810_073015.gif');
     background-color: #cccccc;
 }

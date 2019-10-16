@@ -6,30 +6,48 @@ const md5 = require('md5');
 const rename = require('gulp-rename');
 const addsrc = require('gulp-add-src');
 const modifyCssUrls = require('gulp-modify-css-urls');
+const replace = require('gulp-replace');
+const buildVersion = require('./buildVersion');
+const bust = require('gulp-buster');
 
+const urlAdjuster = require('gulp-css-url-adjuster');
+
+const appendQueryString = require('gulp-append-query-string');
 var cachebust = require('gulp-cache-bust');
 
 var RevAll = require('gulp-rev-all');
 const resversion = require('gulp-res-version');
 
-const cleanDest = () => {
-    return src([
-        './dist/*.css',
-        './dist/**/*.html',
-        './dist/**/*.json',
-        './dist/**/*.jpg',
-    ]).pipe(clean());
-};
-
-// Step 1
-function revision() {
-    return src('./src/*.css')
-        .pipe(rev())
-
-        .pipe(dest('./dist/'))
-        .pipe(rev.manifest())
+function appendCssWithQueryString() {
+    const version = buildVersion.semVersion;
+    return src('./src/**/*.css')
+        .pipe(
+            urlAdjuster({
+                append: version,
+            })
+        )
         .pipe(dest('./dist/'));
 }
+
+const cleanDest = () => {
+    return src(['./dist/**/*.*']).pipe(clean());
+};
+
+// left in as a fallback works but not ideal
+
+// function cssReplace() {
+//     const version = build.semVersion;
+//     return src('./src/**/*.css')
+//         .pipe(replace('.jpg', `.jpg?${version}`))
+//         .pipe(replace('.JPG', `.jpg?${version}`))
+//         .pipe(replace('.jpeg', `.jpg?${version}`))
+//         .pipe(replace('.JPEG', `.jpg?${version}`))
+//         .pipe(replace('.png', `.png?${version}`))
+//         .pipe(replace('.PNG', `.png?${version}`))
+//         .pipe(replace('.gif', `.gif?${version}`))
+//         .pipe(replace('.GIF', `.gif?${version}`))
+//         .pipe(dest('./dist/'));
+// }
 
 function images() {
     const hash = md5(Date.now);
@@ -44,18 +62,6 @@ function images() {
         .pipe(rev.manifest())
 
         .pipe(dest('./dist/images/'));
-}
-
-// Step 2
-function rewrite() {
-    const manifest = src('dist/rev-manifest.json');
-    const ImageManifest = src('dist/images/rev-manifest.json');
-
-    return src('./src/**/*.html')
-        .pipe(revRewrite({ manifest }))
-        .pipe(revRewrite({ ImageManifest }))
-
-        .pipe(dest('./dist/'));
 }
 
 function all() {
@@ -85,8 +91,8 @@ function copyImages() {
     return src(['./src/**/*.jpg']).pipe(dest('./dist/'));
 }
 
-function appendQueryString() {
-    return src(['./src/**/*.html', './src/**/*.css', './src/**/*.jpg'])
+function append_QueryString() {
+    return src(['./src/**/*.html', './src/**/*.jpg'])
         .pipe(
             resversion({
                 rootdir: './dist/',
@@ -116,10 +122,26 @@ task('modifyUrls', () => {
         }).pipe(dest('./dist/'))
     );
 });
+function modify_Urls() {
+    const semVersion = 'v3.1.4';
+    return src('./src/**/*.css').pipe(
+        modifyCssUrls({
+            modify: function(url, filePath) {
+                return 'app/' + url;
+            },
+            prepend: 'https://fancycdn.com/',
+            append: '?cache-buster',
+            // modify: (url, filePath) => url,
+            // append: `?${semVersion}`,
+        }).pipe(dest('./dist/'))
+    );
+}
 
-exports.default = series(cleanDest, revision, images, rewrite);
+// exports.default = series(cleanDest, revision, images, rewrite);
+// exports.default = series(cleanDest, buster);
+exports.default = series(cleanDest, appendCssWithQueryString);
 
-exports.queryString = series(cleanDest, appendQueryString, copyImages);
+exports.queryString = series(cleanDest, append_QueryString, copyImages);
 exports.fileName = series(cleanDest, revision, images, rewrite);
 exports.clean = series(cleanDest);
 // exports.urls = series(cleanDest, modifyUrls);
