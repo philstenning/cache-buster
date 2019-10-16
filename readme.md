@@ -1,27 +1,81 @@
 # Cache Buster
 
-when you change the css file in the ./src folder, it is copied to the ./dist folder and a hash is appended to the file name. Then the html files are updated with the updated css file links.
+Copies files from the ./src/ folder and processes them by appending a querystring to the url's of **'link'** and **'img'** elements and in css files the urls of the **'background-image()'** property. when finished it puts the files in the ./dist/ folder
+
+---
+
+## Install
+
+Install all the dependencies needed
 
 ```javascript
-
-// install all the dependencies needed
 yarn install
+```
 
-// run the default process
-gulp
+---
 
-// watch all css and html files in the ./src folder for any changes
-gulp watch
+## default
 
+run the default process
+appends all css and html files with a ?v=1.2.1
 
-// appends a querystring  myimage.jpg?dskjflasdj to the files
-// this works on all links in the html file
-gulp queryString
+```shell
+> gulp
+```
 
-// changes the file name of the files
-gulp fileName
+---
 
-// cleans the output folder ./dist of all content
-gulp clean
+## queryStringCss
 
+Appends a querystring to all **css** files img and link elements within the document.
+
+```shell
+
+> gulp queryStringCss
+```
+
+input
+
+```css
+.main-image-jpg {
+    background-image: url('IMG_20190810_073015.jpg');
+}
+```
+
+output
+
+```css
+.main-image-jpg {
+    background-image: url('IMG_20190810_073015.jpg?v=1.0.1');
+}
+```
+
+---
+
+## queryStringHtml
+
+```shell
+> gulp queryStringHtml
+```
+
+input
+
+```html
+<img src="./images/IMG_20190303_212013.jpg?
+```
+
+output
+
+```html
+<img src="./images/IMG_20190303_212013.jpg?v%3D1.0.1=d718b187" alt="" />
+```
+
+---
+
+## clean
+
+Cleans the output folder ./dist of all content
+
+```shell
+> gulp clean
 ```

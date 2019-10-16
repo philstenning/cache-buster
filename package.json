@@ -9,22 +9,12 @@
     },
     "dependencies": {
         "gulp": "^4.0.2",
-        "gulp-append-query-string": "^1.1.0",
-        "gulp-buster": "^1.1.0",
-        "gulp-cache-bust": "^1.4.1",
         "gulp-clean": "^0.4.0",
         "gulp-css-url-adjuster": "^0.2.3",
-        "gulp-modify-css-urls": "^2.0.0",
         "gulp-rename": "^1.4.0",
-        "gulp-replace": "^1.0.0",
         "gulp-res-version": "^0.2.0",
-        "gulp-rev": "^9.0.0",
-        "gulp-rev-rewrite": "^2.0.0",
         "gulp-sourcemaps": "^2.6.5",
         "md5": "^2.2.1"
     },
-    "devDependencies": {
-        "gulp-add-src": "^1.0.0",
-        "gulp-rev-all": "^2.0.2"
-    }
+    "devDependencies": {}
 }

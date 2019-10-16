@@ -8,7 +8,7 @@ h1 {
     display: grid;
 }
 .main-image-jpg {
-    background-image: url('IMG_20190810_073015.jpg');
+    background-image: url(IMG_20190810_073015.jpg);
     background-color: #cccccc;
 }
 .main-image-png {
